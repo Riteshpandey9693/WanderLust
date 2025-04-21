@@ -4,12 +4,11 @@ const axios = require("axios");
 
 // Authorization Middlewares
 module.exports.isLoggedIn = (req, res, next) => {
-  req.session.redirectUrl = req.originalUrl;
-  if (!req.isAuthenticated()) {
-    req.flash("error", "You must be logged in to access this page.");
-    return res.redirect("/login");
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    req.flash("error", "You must be logged in to perform this action.");
+    return res.status(403).json({ error: "You must be logged in to perform this action." });
   }
-  return next();
+  next();
 };
 
 module.exports.isOwner = async (req, res, next) => {
@@ -43,19 +42,36 @@ module.exports.redirectUrl = (req, res, next) => {
 module.exports.forwardGedcoding = async (req, res, next) => {
   try {
     if (req.body.listing.location && req.body.listing.country) {
-      const key = process.env.MAP_API_KEY;
-      let { location, country } = req.body.listing;
-      let address = `${location} ${country}`;
-      let url = ` https://api.maptiler.com/geocoding/$%7B${address}%7D.json?key=${key}`;
-      let result = await axios.get(url);
-      let geometry = result.data.features[0].geometry;
-      req.body.listing.geometry = geometry;
-      if (geometry === "undefined") {
-        req.flash("error", "Please give a valid location");
+      const key = process.env.MAP_TOKEN; // Use MAP_TOKEN from .env
+      const { location, country } = req.body.listing;
+      const address = `${location} ${country}`;
+      const url = `https://api.maptiler.com/geocoding/${encodeURIComponent(address)}.json?key=${key}`;
+
+      console.log("Geocoding Request URL:", url);
+
+      const result = await axios.get(url);
+
+      console.log("Geocoding API Response:", result.data);
+
+      if (result.data.features.length === 0) {
+        return res.status(400).json({ error: "Invalid location provided." });
       }
+
+      req.body.listing.geometry = result.data.features[0].geometry;
     }
+    next();
   } catch (err) {
+    if (err.response) {
+      console.error("Geocoding API Error Response:", err.response.data);
+      console.error("Geocoding API Status Code:", err.response.status);
+    } else {
+      console.error("Error in forwardGedcoding middleware:", err.message);
+    }
+
+    if (err.response && err.response.status === 403) {
+      return res.status(403).json({ error: "Geocoding API returned 403 Forbidden. Check your API token." });
+    }
+
     next(err);
   }
-  return next();
 };

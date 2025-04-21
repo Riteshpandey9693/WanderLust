@@ -8,14 +8,11 @@ cloudinary.config({
 });
 
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
+  cloudinary,
   params: {
-    folder: "airbnb_yashwardhan_dev",
-    allowed_formats: ["png", "jpg", "jpeg", "webp"], // supports promises as well
+    folder: "Wanderlust",
+    allowed_formats: ["jpeg", "png", "jpg"],
   },
 });
 
-module.exports = {
-  storage,
-  cloudinary,
-};
+module.exports = { cloudinary, storage };

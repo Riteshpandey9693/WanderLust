@@ -7,12 +7,12 @@ if (process.env.NODE_ENV !== "production") {
 const config = {
   mongoUrl:
     process.env.NODE_ENV !== "production"
-      ? "mongodb://127.0.0.1:27017/airbnb"
-      : process.env.DB_URL,
+      ? process.env.ATLASDB_URL
+      : process.env.ATLASDB_URL, // Use the same for now
 
   googleCallbackUrl:
     process.env.NODE_ENV !== "production"
-      ? "/auth/google/callback"
+      ? "http://localhost:3000/auth/google/callback"
       : "https://wanderlust-6nid.onrender.com/auth/google/callback",
 };
 

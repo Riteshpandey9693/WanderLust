@@ -11,16 +11,16 @@ module.exports.validateListing = async (req, res, next) => {
           invalidate: true,
         });
       }
-      console.log("validation error", error.message);
-      throw new ExpressError(400, error.message);
+      console.log("Validation error:", error.message);
+      return res.status(400).json({ error: error.message });
     }
-    return next();
+    next();
   } catch (err) {
     next(err);
   }
 };
 
-module.exports.validateReview = (req, rres, next) => {
+module.exports.validateReview = (req, res, next) => {
   const { error } = reviewSchema.validate(req.body);
   if (error) {
     throw new ExpressError(422, error.message);

@@ -1,13 +1,15 @@
 const mongoose = require("mongoose");
-const { mongoUrl } = require("./index.js");
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(mongoUrl);
-    console.log("MongoDB connected successfully");
+    console.log("MongoDB Connection String:", process.env.ATLASDB_URL); // Debugging
+    const conn = await mongoose.connect(process.env.ATLASDB_URL, {
+      serverSelectionTimeoutMS: 60000, // Increase timeout to 60 seconds
+    });
+    console.log(`Connected to MongoDB Atlas successfully: ${conn.connection.host}`);
   } catch (err) {
-    console.error("MongoDB connection error:", err.message);
-    process.exit(1);
+    console.error("Failed to connect to MongoDB Atlas:", err.message);
+    process.exit(1); // Exit the process with failure
   }
 };
 

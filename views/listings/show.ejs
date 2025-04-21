@@ -120,28 +120,29 @@
       </div>
       <% } %>
       <div class="col-12 col-lg-9 row row-cols-1 row-cols-md-2">
-        <% for( let review of listing.reviews) { %>
-        <div class="card col mt-3" data-aos="fade-up">
-          <div class="card-body border reviews">
-            <h6 class="card-title"><%= review.author.username %></h6>
-            <p
-              class="starability-result card-text"
-              data-rating="<%= review.rating %>"
-            >
-              Rated: <%= review.rating %>stars
-            </p>
-            <p class="card-text"><%= review.comment %> <br /></p>
+        <% for (let review of listing.reviews) { %>
+          <div class="card col mt-3" data-aos="fade-up">
+            <div class="card-body border reviews">
+              <% if (review.author) { %>
+                <h6 class="card-title"><%= review.author.username %></h6>
+              <% } else { %>
+                <h6 class="card-title text-muted">Unknown User</h6>
+              <% } %>
+              <p class="starability-result card-text" data-rating="<%= review.rating %>">
+                Rated: <%= review.rating %> stars
+              </p>
+              <p class="card-text"><%= review.comment %></p>
 
-            <form
-              method="post"
-              action="/listings/<%=listing._id%>/review/<%=review._id%>?_method=DELETE"
-            >
-            <%if(currUser && currUser._id.equals(review.author._id)) { %>
-              <button class="btn btn-sm btn-dark review-del-btn">Delete</button>
-           <% } %>
-            </form>
+              <% if (currUser && currUser._id.equals(review.author?._id)) { %>
+                <form
+                  method="post"
+                  action="/listings/<%= listing._id %>/review/<%= review._id %>?_method=DELETE"
+                >
+                  <button class="btn btn-sm btn-dark review-del-btn">Delete</button>
+                </form>
+              <% } %>
+            </div>
           </div>
-        </div>
         <% } %>
       </div>
       <div class="col-12 col-lg-9 mb-3 border-top mt-3 row" data-aos="fade-up">

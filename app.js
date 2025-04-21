@@ -1,3 +1,4 @@
+require("dotenv").config(); // Load environment variables
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -11,7 +12,7 @@ const LocalStrategy = require("passport-local");
 const sessionOptions = require("./config/session.js");
 const connectDB = require("./config/db.js");
 const User = require("./models/users.model.js");
-const { filters } = require("./utils/filters.js");
+const { filters } = require("./utils/filters.js"); // Import filters
 const configureGoogleStrategy = require("./config/googleStrategy.js");
 const ExpressError = require("./utils/ExpressError.js");
 const listingRouter = require("./router/listings.router.js");
@@ -31,7 +32,8 @@ app.use(express.static(path.join(__dirname, "public/css")));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-connectDB(); // Database connected
+// Connect to MongoDB Atlas
+connectDB();
 
 configureGoogleStrategy();
 app.use(session(sessionOptions));
@@ -42,11 +44,12 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Middleware to set res.locals variables
 app.use((req, res, next) => {
+  res.locals.currUser = req.user || null; // Set currUser for EJS templates
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  res.locals.currUser = req.user;
-  res.locals.filters = filters;
+  res.locals.filters = filters; // Set filters for EJS templates
   next();
 });
 
@@ -66,5 +69,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log("App is listening on port:", port);
+  console.log(`App is listening on port: ${port}`);
 });
