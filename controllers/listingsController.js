@@ -2,18 +2,13 @@ const Listing = require("../models/listing.model.js");
 const { cloudinary } = require("../cloudConfig.js");
 
 module.exports.index = async (req, res) => {
-  try {
-    const listings = await Listing.find();
-    const sliderIdx = 0;
-    res.render("./listings/index.ejs", {
-      listings,
-      sliderIdx,
-      category: "undefined",
-    });
-  } catch (err) {
-    console.error("Error in index method:", err.message);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+  let listings = await Listing.find();
+  let sliderIdx = 0;
+  res.render("./listings/index.ejs", {
+    listings,
+    sliderIdx,
+    category: "undefiend",
+  });
 };
 
 module.exports.renderNewForm = (req, res) => {
@@ -21,89 +16,58 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createNewListing = async (req, res) => {
-  try {
-    const newListing = new Listing(req.body.listing);
-    newListing.owner = req.user._id;
-
-    if (req.file) {
-      const { path: url, filename } = req.file;
-      newListing.image = { url, filename };
-    }
-
-    console.log("New listing with image:", newListing); // Debug log for new listing
-
-    await newListing.save();
-    req.flash("success", "Listing created successfully!");
-    res.redirect(`/listing/${newListing._id}`);
-  } catch (err) {
-    console.error("Error creating listing:", err.message);
-    req.flash("error", "Failed to create listing.");
-    res.redirect("/listing/new");
-  }
+  let { path: url, filename } = req.file;
+  let newListing = new Listing(req.body.listing);
+  newListing.owner = req.user._id;
+  newListing.image = { url, filename };
+  await newListing.save();
+  req.flash("success", "New Listing Created!");
+  res.redirect("/");
 };
 
 module.exports.showListing = async (req, res) => {
-  try {
-    const listing = await Listing.findById(req.params.id)
-      .populate("owner")
-      .populate({
-        path: "reviews",
-        populate: { path: "author" },
-      });
-
-    if (!listing) {
-      req.flash("error", "Listing not found.");
-      return res.redirect("/listing");
-    }
-
-    res.render("./listings/show.ejs", { listing });
-  } catch (err) {
-    console.error("Error fetching listing:", err.message);
-    req.flash("error", "Failed to fetch listing.");
-    res.redirect("/listing");
+  let { id } = req.params;
+  let listing = await Listing.findById(id)
+    .populate({ path: "reviews", populate: { path: "author" } })
+    .populate("owner");
+  if (!listing) {
+    req.flash("error", "Listing you requested does not exist!");
+    console.log("if triggring here.");
+    return res.redirect("/listing");
   }
+  res.render("./listings/show.ejs", { listing });
 };
 
 module.exports.renderEditForm = async (req, res) => {
-  const { id } = req.params;
-  const listing = await Listing.findById(id);
-
+  let { id } = req.params;
+  let listing = await Listing.findById(id);
   if (!listing) {
-    req.flash("error", "Listing you requested does not exist.");
+    req.flash("error", "Listing you requested for does not exists.");
     return res.redirect("/listing");
   }
-
   res.render("./listings/edit.ejs", { listing });
 };
-
 module.exports.editListing = async (req, res) => {
-  const { id } = req.params;
-
+  let { id } = req.params;
   if (req.file) {
-    const { path: url, filename } = req.file;
+    let { path: url, filename } = req.file;
     req.body.listing.image = { url, filename };
-
-    const listing = await Listing.findById(id);
-    if (listing.image && listing.image.filename) {
-      await cloudinary.uploader.destroy(listing.image.filename, {
-        invalidate: true,
-      });
-    }
+    let listing = await Listing.findById(id);
+    await cloudinary.uploader.destroy(listing.image.filename, {
+      invalidate: true,
+    });
   }
-
-  const listing = await Listing.findByIdAndUpdate(id, req.body.listing, {
+  let listing = await Listing.findByIdAndUpdate(id, req.body.listing, {
     new: true,
     runValidators: true,
   });
-
   req.flash("success", "Listing Updated!");
   res.redirect(`/listing/${id}`);
 };
 
 module.exports.category = async (req, res) => {
-  const { category = "undefined", idx: sliderIdx } = req.params;
-  const listings = await Listing.find({ category });
-
+  let { category = "undefiend", idx: sliderIdx } = req.params;
+  let listings = await Listing.find({ category: category });
   res.render("./listings/index.ejs", {
     listings,
     sliderIdx,
@@ -112,15 +76,11 @@ module.exports.category = async (req, res) => {
 };
 
 module.exports.destroyListing = async (req, res) => {
-  const { id } = req.params;
-  const listing = await Listing.findByIdAndDelete(id);
-
-  if (listing.image && listing.image.filename) {
-    await cloudinary.uploader.destroy(listing.image.filename, {
-      invalidate: true,
-    });
-  }
-
+  let { id } = req.params;
+  let listing = await Listing.findByIdAndDelete(id);
+  await cloudinary.uploader.destroy(listing.image.filename, {
+    invalidate: true,
+  });
   req.flash("success", "Listing Deleted!");
   res.redirect(`/`);
 };
