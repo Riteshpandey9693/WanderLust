@@ -50,13 +50,13 @@ module.exports.forwardGedcoding = async (req, res, next) => {
       console.log("Geocoding Request URL:", url);
 
       const result = await axios.get(url);
-
       console.log("Geocoding API Response:", result.data);
 
       if (result.data.features.length === 0) {
         return res.status(400).json({ error: "Invalid location provided." });
       }
 
+      // Extract the first feature's geometry
       req.body.listing.geometry = result.data.features[0].geometry;
     }
     next();

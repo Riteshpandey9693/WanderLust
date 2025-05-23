@@ -36,7 +36,13 @@
         </form>
       </div>
       <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/listing/new">Airbnb your home</a>
+        <li class="nav-item">
+          <% if (currUser) { %>
+          <a class="nav-link" href="/listing/new">Airbnb your home</a>
+          <% } else { %>
+          <a class="nav-link" href="/login">Airbnb your home</a>
+          <% } %>
+        </li>
         <% if (!currUser) { %>
         <a class="nav-link" href="/signup"> <b>Sign up</b> </a>
         <a class="nav-link" href="/login"><b>Log in</b></a>
