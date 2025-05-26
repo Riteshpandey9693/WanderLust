@@ -1,0 +1,163 @@
+/* footer -------------------------------------------------------------------------------------*/
+.wanderlust-footer {
+    background: #111;
+    color: #fff;
+    font-family: 'Poppins', 'Plus Jakarta Sans', Arial, sans-serif;
+    font-size: 1rem;
+    margin-top: 2rem;
+    z-index: 1;
+}
+
+.wanderlust-footer .main-ftr {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.wanderlust-footer .ftr-head h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.wanderlust-footer .ftr-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.wanderlust-footer .ftr-nav-m {
+    cursor: pointer;
+    opacity: 0.8;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 0.2rem;
+    transition: border 0.2s, opacity 0.2s;
+}
+
+.wanderlust-footer .ftr-nav-m:hover,
+.wanderlust-footer .ftr-nav-m:focus {
+    opacity: 1;
+    border-bottom: 2px solid #fff;
+}
+
+.wanderlust-footer .ftr-nav-pop {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.wanderlust-footer .ftr-nav-pop > div {
+    min-width: 140px;
+}
+
+.wanderlust-footer .main-light {
+    font-weight: 500;
+    color: #fff;
+}
+
+.wanderlust-footer .light {
+    color: #bbb;
+    font-size: 0.95rem;
+}
+
+.wanderlust-footer .show {
+    color: #ff385c;
+    cursor: pointer;
+}
+
+.wanderlust-footer .ftr-hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 1.5rem 0;
+}
+
+.wanderlust-footer .ftr-mdl {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.wanderlust-footer .ftr-mdl > div {
+    min-width: 180px;
+}
+
+.wanderlust-footer .ftr-mdl-cont > div {
+    margin-bottom: 0.5rem;
+}
+
+.wanderlust-footer .ftr-copy {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.wanderlust-footer .priv a {
+    color: #bbb;
+    margin-right: 0.7rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.wanderlust-footer .priv a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.wanderlust-footer .ftr-net {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.wanderlust-footer .eng-in {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.wanderlust-footer .ftr-inr {
+    font-weight: 500;
+}
+
+.wanderlust-footer .social-icon a img {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.5rem;
+    filter: grayscale(1) brightness(1.2);
+    transition: filter 0.2s;
+}
+
+.wanderlust-footer .social-icon a img:hover {
+    filter: none;
+}
+
+.wanderlust-footer .ftr-akash {
+    text-align: center;
+    color: #bbb;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+    .wanderlust-footer .main-ftr {
+        padding: 1rem 0.5rem;
+    }
+
+    .wanderlust-footer .ftr-nav,
+    .wanderlust-footer .ftr-nav-pop,
+    .wanderlust-footer .ftr-mdl {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .wanderlust-footer .ftr-copy {
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+}

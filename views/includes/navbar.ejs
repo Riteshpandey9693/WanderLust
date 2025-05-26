@@ -1,0 +1,55 @@
+<nav
+  data-aos="fade-down"
+  class="navbar navbar-expand-lg bg-body-light sticky-top border-bottom"
+>
+  <div class="container-fluid">
+    <div class="d-flex align-items-center">
+      <a class="nav-link" href="/listings">
+        <img src="/Logo.png" alt="logo" class="logoImg" />
+      </a>
+      <div class="navbar-nav brandName">
+        <a class="nav-link" href="/">Wanderlust</a>
+      </div>
+    </div>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="search me-3">
+        <form class="d-flex" role="search" method="get" action="/">
+          <input
+            type="search"
+            class="ms-3"
+            placeholder="Search"
+            id="search-input"
+          />
+
+          <button class="btn search-btn" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i> Search
+          </button>
+        </form>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <% if (currUser) { %>
+          <a class="nav-link" href="/listing/new">Airbnb your home</a>
+          <% } else { %>
+          <a class="nav-link" href="/login">Airbnb your home</a>
+          <% } %>
+        </li>
+        <% if (!currUser) { %>
+        <a class="nav-link" href="/signup"> <b>Sign up</b> </a>
+        <a class="nav-link" href="/login"><b>Log in</b></a>
+        <% } else { %>
+        <a class="nav-link" href="/logout"><b>Log Out</b></a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>

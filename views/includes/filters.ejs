@@ -1,0 +1,33 @@
+<script>
+  let selectedFilter = "<%= category%>";
+</script>
+
+<div data-aos="fade-down" class="filters mb-3">
+  <div class="slider ms-4">
+    <div class="slider-container">
+      <% for(let filter of filters) {%>
+      <div class="slide">
+        <a href="/listing/category/<%= filter.filterName%>">
+          <i class="<%= filter.iconClassName %>"></i><%= filter.filterName%></a
+        >
+      </div>
+      <%}%>
+    </div>
+    <div class="arrow left hide-arrow"><span class="arr">&lt;</span></div>
+    <div class="arrow right hide-arrow"><span class="arr">&gt;</span></div>
+  </div>
+
+  <div class="form-check-reverse form-switch">
+    <div class="taxe-filter ms-3 me-3">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        id="flexSwitchCheckDefault"
+      />
+      <label class="form-check-label" for="flexSwitchCheckDefault"
+        >Default switch checkbox input</label
+      >
+    </div>
+  </div>
+</div>
